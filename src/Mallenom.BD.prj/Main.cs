@@ -152,8 +152,17 @@ namespace Mallenom.BD
 		/// <summary>Кнопка отвечающая за удаление определенного элемента в базе данных.</summary>
 		private void OnDeleteClick(object sender, EventArgs e)
 		{
-			_logic.RemoveCatDataBase(Convert.ToInt32(_txtId.Text));
-			UpdateDataView(dataGridView1);
+			var result = int.TryParse(_txtId.Text, out int id);
+			if (result == true)
+			{
+				_logic.RemoveCatDataBase(id);
+				UpdateDataView(dataGridView1);
+			}
+			else
+			{
+				MessageBox.Show("Нет такого id");
+			}
+		
 		}
 	}
 }
