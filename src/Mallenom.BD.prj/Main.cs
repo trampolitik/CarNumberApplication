@@ -13,27 +13,26 @@ using System.Windows.Forms;
 
 namespace Mallenom.BD
 {
-	public partial class Form1 : Form
+	public partial class Main : Form
 	{
-		ApplicationContext dataBase = new ApplicationContext();// класс базы данных
-		DataBaseLogic logic = new DataBaseLogic(); // класс логиик 
-		Random rnd = new Random(); // класс случайных значений 
+		private readonly DataBaseLogic _logic = new DataBaseLogic(); // класс логиик 
+		private readonly Random _rnd = new Random(); // класс случайных значений 
 		
-		public Form1()
+		public Main()
 		{
 			InitializeComponent();
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			logic.ViewDataBase(dataGridView1);
+			_logic.ViewDataBase(dataGridView1);
 			
 		}
 
 		/// <summary> Кнопка отвечающая за добавление машины в базу данных. </summary>
-		private async void add_button_Click(object sender, EventArgs e)
+		private async void OnAddButtonClick(object sender, EventArgs e)
 		{
-			if(textBox_NumberName.Text == string.Empty || Convert.ToInt32(textBox_idCamer.Text) > 16)
+			if(_txtNumberName.Text == string.Empty || Convert.ToInt32(_txtIdCamer.Text) > 16)
 			{
 				await Task.Run(() =>
 					MessageBox.Show("Поле не должно быть пустым или id не допустимое")
@@ -42,14 +41,14 @@ namespace Mallenom.BD
 			}
 			else
 			{
-				if(textBox_idCamer.Text == string.Empty)
+				if(_txtIdCamer.Text == string.Empty)
 				{
-					logic.AddCarDataBase(textBox_NumberName.Text, rnd.Next(1, 16));
+					_logic.AddCarDataBase(_txtNumberName.Text, _rnd.Next(1, 16));
 					TextReset();
 				}
 				else
 				{
-					logic.AddCarDataBase(textBox_NumberName.Text, Convert.ToInt32(textBox_idCamer.Text));
+					_logic.AddCarDataBase(_txtNumberName.Text, Convert.ToInt32(_txtIdCamer.Text));
 					TextReset();
 				}
 
@@ -59,10 +58,10 @@ namespace Mallenom.BD
 		/// <summary>Очищаем поля id камеры и номера машины.</summary>
 		private void TextReset()
 		{
-			textBox_NumberName.Text = string.Empty;
-			textBox_idCamer.Text = string.Empty;
+			_txtNumberName.Text = string.Empty;
+			_txtIdCamer.Text = string.Empty;
 			UpdateDataView(dataGridView1);
-			logic.ViewDataBase(dataGridView1);
+			_logic.ViewDataBase(dataGridView1);
 		}
 
 		/// <summary>Метод обновляет таблицу данных  и показывает его, нужен для того, чтобы видеть обновления в таблице.</summary>
@@ -71,32 +70,32 @@ namespace Mallenom.BD
 			dataGrid.DataSource = null;
 			dataGrid.Update();
 			dataGrid.Refresh();
-			logic.ViewDataBase(dataGridView1);
+			_logic.ViewDataBase(dataGridView1);
 		}
 
 		/// <summary> Метод отвечающий за нажатие на таблицу.</summary>
-		private async void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+		private async void OnCellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			var selectedRow = e.RowIndex;
 
 			if(e.RowIndex >= 0)
 			{
 				DataGridViewRow row = dataGridView1.Rows[selectedRow];
-				textBox_NumberName.Text = row.Cells[1].Value.ToString();
-				textBox_idCamer.Text = row.Cells[3].Value.ToString();
-				label_delete.Text = row.Cells[0].Value.ToString();
+				_txtNumberName.Text = row.Cells[1].Value.ToString();
+				_txtIdCamer.Text = row.Cells[3].Value.ToString();
+				_txtId.Text = row.Cells[0].Value.ToString();
 
 			}
 
 		}
 		/// <summary> Удаление всех машин с данным номером </summary>
-		private void deleteOneThing_button1_Click(object sender, EventArgs DataGridViewCellEventArgs)
+		private void OnDeleteManyCarsClick(object sender, EventArgs DataGridViewCellEventArgs)
 		{
 			using(var db = new ApplicationContext())
 			{
-				if(textBox_NumberName != null)
+				if(_txtNumberName != null)
 				{
-					var list = db.Cars.Where(x => x.NumberCar == textBox_NumberName.Text).ToList();
+					var list = db.Cars.Where(x => x.NumberCar == _txtNumberName.Text).ToList();
 					foreach(var l in list)
 					{
 						db.Cars.Remove(l);
@@ -109,14 +108,14 @@ namespace Mallenom.BD
 		}
 
 		/// <summary> Кнопка, которая обновляет всю таблицу либо же загружает ее при старте. </summary>
-		private void dounload_update_Button_Click(object sender, EventArgs e)
+		private void OnUpdateClick(object sender, EventArgs e)
 		{
-			logic.ViewDataBase(dataGridView1);
+			_logic.ViewDataBase(dataGridView1);
 			UpdateDataView(dataGridView1);
 		}
 
 		/// <summary> Сортирует данные по id камеры </summary>
-		private void sortOfId_ToolStripMenuItem_Click(object sender, EventArgs e)
+		private void OnSortIdClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
@@ -124,7 +123,7 @@ namespace Mallenom.BD
 			}
 		}
 		/// <summary> Сортирует данные по номеру машины </summary>
-		private void sortOfByNumberCars_ToolStripMenuItem_Click(object sender, EventArgs e)
+		private void OnSortNumberCarsClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
@@ -132,27 +131,28 @@ namespace Mallenom.BD
 			}
 		}
 		/// <summary> Сортирует данные по дате</summary>
-		private void sortByData_ToolStripMenuItem_Click(object sender, EventArgs e)
+		private void OnSortDataClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
 				dataGridView1.DataSource = db.Cars.OrderBy(x => x.DateTime).ToList();
 			}
+			
 		}
-		/// <summary></summ>Поиск по id или номеру машины.</summary>
-		private void button_searchIdCamer_Click(object sender, EventArgs e)
+		/// <summary>Поиск по id или номеру машины.</summary>
+		private void OnSearchClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
-				dataGridView1.DataSource = db.Cars.AsEnumerable().Where(x => Convert.ToString(x.IdCamer) == textBox_searchIdCamer.Text 
-				|| x.NumberCar.Contains(textBox_searchIdCamer.Text)).ToList();
+				dataGridView1.DataSource = db.Cars.AsEnumerable().Where(x => Convert.ToString(x.IdCamer) == _txtSearchIdCamer.Text 
+				|| x.NumberCar.Contains(_txtSearchIdCamer.Text)).ToList();
 
 			}
 		}
 		/// <summary>Кнопка отвечающая за удаление определенного элемента в базе данных.</summary>
-		private void button_DeleteCar_Click(object sender, EventArgs e)
+		private void OnDeleteClick(object sender, EventArgs e)
 		{
-			logic.RemoveCatDataBase(Convert.ToInt32(label_delete.Text));
+			_logic.RemoveCatDataBase(Convert.ToInt32(_txtId.Text));
 			UpdateDataView(dataGridView1);
 		}
 	}

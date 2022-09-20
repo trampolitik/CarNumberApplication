@@ -7,10 +7,9 @@ using System.Windows.Forms;
 
 namespace Mallenom.BD
 {
-	public  class DataBaseLogic
+	public class DataBaseLogic
 	{
-		Random rnd = new Random();
-		ApplicationContext db =  new ApplicationContext();
+		private readonly Random _rnd = new Random();
 
 		/// <summary>Добавление номера машины в базу данных.</summary>
 		/// <param name="numberName">Номер машины.</param>
@@ -24,11 +23,12 @@ namespace Mallenom.BD
 				db.SaveChanges();
 			}
 		}
+
 		/// <summary>Удаление элемента из базы данных по id.</summary>
 		/// <param name="id"> Id в базе данных.</param>
 		public void RemoveCatDataBase(int id)
 		{
-			using( var db = new ApplicationContext())
+			using(var db = new ApplicationContext())
 			{
 				var deleteitem = db.Cars.Find(id);
 
@@ -41,22 +41,28 @@ namespace Mallenom.BD
 			}
 
 		}
+
 		/// <summary>Метод, который будет показывать таблицу и проверять данные.</summary>
 		public void ViewDataBase(DataGridView dataGrid)
 		{
-			var cars = db.Cars;
+			using(var db = new ApplicationContext())
+			{
+				var cars = db.Cars;
 
-			if(cars.Count() > 0)
-			{
-				dataGrid.DataSource = cars.ToList();
-			}
-			else
-			{
-				MessageBox.Show("нет данных");
-				dataGrid.DataSource = null;
+				if(cars.Count() > 0)
+				{
+					dataGrid.DataSource = cars.ToList();
+				}
+				else
+				{
+					MessageBox.Show("нет данных");
+					dataGrid.DataSource = null;
+				}
+
 			}
 
 		}
+
 		/// <summary>Создание случайных автомобилей для тестирования.</summary>
 		public void GenerationCars()
 		{
@@ -68,10 +74,10 @@ namespace Mallenom.BD
 
 			for(int i = 0; i < 10; i++)
 			{
-				int index = rnd.Next(NumberCars.Count);
+				int index = _rnd.Next(NumberCars.Count);
 				using(var db = new ApplicationContext())
 				{
-					Cars car = new Cars { NumberCar = NumberCars[index], DateTime = DateTime.Now, IdCamer = rnd.Next(1, 16) };
+					Cars car = new Cars { NumberCar = NumberCars[index], DateTime = DateTime.Now, IdCamer = _rnd.Next(1, 16) };
 					db.Cars.Add(car);
 					db.SaveChanges();
 				}

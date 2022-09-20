@@ -15,14 +15,18 @@ namespace Mallenom.BD
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		/// <summary>Номер машины.</summary>
-		public string NumberCar { get; set; } 
+		/// <summary>Возвращает и устанавлиет номер машины.</summary>
+		/// <value>Номер машины.</value>
+		public string NumberCar { get; set; }
 
-		/// <summary>Время когда был сделан снимок.</summary>
+		/// <summary>Возвращает и устанавлиет время, когда был сделан снимок.</summary>
+		/// <value>Время, когда был сделан снимок.</value>
 		public DateTime DateTime { get; set; }
-		/// <summary>Id камеры.</summary>
+
+		/// <summary>Возвращает и устанавлиет Id камеры.</summary>
+		/// <value>Id камеры.</value>
 		[Range(1,16)]
-		public int? IdCamer { get; set; } // id камеры
+		public int? IdCamer { get; set; } 
 		
 	}
 }
