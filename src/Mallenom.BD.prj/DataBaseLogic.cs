@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +15,19 @@ namespace Mallenom.BD
 		/// <summary>Добавление номера машины в базу данных.</summary>
 		/// <param name="numberName">Номер машины.</param>
 		/// <param name="idCamer">Id камеры.</param>
-		public void AddCarDataBase(string numberName, int idCamer)
+		public async void AddCarDataBase(string numberName, int idCamer)
 		{
 			using(var db = new ApplicationContext())
 			{
 				Cars car = new Cars { NumberCar = numberName, DateTime = DateTime.Now, IdCamer = idCamer };
 				db.Cars.Add(car);
-				db.SaveChanges();
+				await db.SaveChangesAsync();
 			}
 		}
 
 		/// <summary>Удаление элемента из базы данных по id.</summary>
 		/// <param name="id"> Id в базе данных.</param>
-		public void RemoveCatDataBase(int id)
+		public async void RemoveCatDataBase(int id)
 		{
 			using(var db = new ApplicationContext())
 			{
@@ -35,7 +36,7 @@ namespace Mallenom.BD
 				if(deleteitem != null)
 				{
 					db.Cars.Remove(deleteitem);
-					db.SaveChanges();
+					await db.SaveChangesAsync();
 				}
 
 			}
@@ -43,7 +44,7 @@ namespace Mallenom.BD
 		}
 
 		/// <summary>Метод, который будет показывать таблицу и проверять данные.</summary>
-		public void ViewDataBase(DataGridView dataGrid)
+		public async void ViewDataBase(DataGridView dataGrid)
 		{
 			using(var db = new ApplicationContext())
 			{
@@ -51,7 +52,7 @@ namespace Mallenom.BD
 
 				if(cars.Count() > 0)
 				{
-					dataGrid.DataSource = cars.ToList();
+					 dataGrid.DataSource = await cars.ToListAsync();
 				}
 				else
 				{

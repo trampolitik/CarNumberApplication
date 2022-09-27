@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace Mallenom.BD
 	{
 		private readonly DataBaseLogic _logic = new DataBaseLogic(); // класс логиик 
 		private readonly Random _rnd = new Random(); // класс случайных значений 
-		
+
 		public Main()
 		{
 			InitializeComponent();
@@ -26,7 +27,7 @@ namespace Mallenom.BD
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			_logic.ViewDataBase(dataGridView1);
-			
+
 		}
 
 		/// <summary> Кнопка отвечающая за добавление машины в базу данных. </summary>
@@ -89,7 +90,7 @@ namespace Mallenom.BD
 
 		}
 		/// <summary> Удаление всех машин с данным номером </summary>
-		private void OnDeleteManyCarsClick(object sender, EventArgs DataGridViewCellEventArgs)
+		private async void OnDeleteManyCarsClick(object sender, EventArgs DataGridViewCellEventArgs)
 		{
 			using(var db = new ApplicationContext())
 			{
@@ -99,53 +100,57 @@ namespace Mallenom.BD
 					foreach(var l in list)
 					{
 						db.Cars.Remove(l);
-						db.SaveChanges();
+						await db.SaveChangesAsync();
 
 					}
 				}
 			}
-			
+
 		}
 
 		/// <summary> Кнопка, которая обновляет всю таблицу либо же загружает ее при старте. </summary>
-		private void OnUpdateClick(object sender, EventArgs e)
+		private async void OnUpdateClick(object sender, EventArgs e)
 		{
-			_logic.ViewDataBase(dataGridView1);
-			UpdateDataView(dataGridView1);
+				_logic.ViewDataBase(dataGridView1);
+				UpdateDataView(dataGridView1);
 		}
 
 		/// <summary> Сортирует данные по id камеры </summary>
-		private void OnSortIdClick(object sender, EventArgs e)
+		private async void OnSortIdClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
-				dataGridView1.DataSource = db.Cars.OrderBy(x => x.IdCamer).ToList();
+				dataGridView1.DataSource = await db.Cars.OrderBy(x => x.IdCamer).ToListAsync();
 			}
 		}
 		/// <summary> Сортирует данные по номеру машины </summary>
-		private void OnSortNumberCarsClick(object sender, EventArgs e)
+		private async void OnSortNumberCarsClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
-				dataGridView1.DataSource = db.Cars.OrderBy(x => x.NumberCar).ToList();
+				dataGridView1.DataSource = await db.Cars.OrderBy(x => x.NumberCar).ToListAsync();
 			}
 		}
 		/// <summary> Сортирует данные по дате</summary>
-		private void OnSortDataClick(object sender, EventArgs e)
+		private async void OnSortDataClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
-				dataGridView1.DataSource = db.Cars.OrderBy(x => x.DateTime).ToList();
+				dataGridView1.DataSource = await db.Cars.OrderBy(x => x.DateTime).ToListAsync();
 			}
-			
+
 		}
 		/// <summary>Поиск по id или номеру машины.</summary>
-		private void OnSearchClick(object sender, EventArgs e)
+		private async void OnSearchClick(object sender, EventArgs e)
 		{
 			using(var db = new ApplicationContext())
 			{
-				dataGridView1.DataSource = db.Cars.AsEnumerable().Where(x => Convert.ToString(x.IdCamer) == _txtSearchIdCamer.Text 
-				|| x.NumberCar.Contains(_txtSearchIdCamer.Text)).ToList();
+				List<Cars> info = null;
+				await Task.Run(() =>
+					info = db.Cars.AsEnumerable().Where(x => Convert.ToString(x.IdCamer) == _txtSearchIdCamer.Text
+					|| x.NumberCar.Contains(_txtSearchIdCamer.Text)).ToList()
+				);
+				dataGridView1.DataSource = info;
 
 			}
 		}
@@ -153,7 +158,7 @@ namespace Mallenom.BD
 		private void OnDeleteClick(object sender, EventArgs e)
 		{
 			var result = int.TryParse(_txtId.Text, out int id);
-			if (result == true)
+			if(result == true)
 			{
 				_logic.RemoveCatDataBase(id);
 				UpdateDataView(dataGridView1);
@@ -162,7 +167,7 @@ namespace Mallenom.BD
 			{
 				MessageBox.Show("Нет такого id");
 			}
-		
+
 		}
 	}
 }
