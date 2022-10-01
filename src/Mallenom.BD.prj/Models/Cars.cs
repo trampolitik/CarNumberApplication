@@ -30,7 +30,7 @@ namespace Mallenom.BD
 
 		/// <summary>Возвращает и устанавливает массив байтов, который содержит картинку.</summary>
 		/// <value>Массив байтов.</value>
-		public byte[] Image { get; set; }
+		public byte[]? Image { get; set; }
 		
 	}
 }

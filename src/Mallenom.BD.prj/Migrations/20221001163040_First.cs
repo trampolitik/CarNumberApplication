@@ -15,7 +15,8 @@ namespace Mallenom.BD.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NumberCar = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdCamer = table.Column<int>(type: "int", nullable: false)
+                    IdCamer = table.Column<int>(type: "int", nullable: true),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {

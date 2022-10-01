@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mallenom.BD.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220914212930_First")]
+    [Migration("20221001163040_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,8 +31,12 @@ namespace Mallenom.BD.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdCamer")
+                    b.Property<int?>("IdCamer")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NumberCar")
                         .IsRequired()

@@ -13,7 +13,7 @@ namespace Mallenom.BD
 		public DbSet<Cars> Cars { get; set; }
 		public ApplicationContext()
 		{
-			Database.EnsureCreated();
+			//Database.EnsureCreated();
 
 		}
 

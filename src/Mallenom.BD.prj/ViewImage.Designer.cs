@@ -30,6 +30,7 @@
 		{
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this._btnLoadImage = new System.Windows.Forms.Button();
+			this._btnSaveImage = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -54,11 +55,22 @@
 			this._btnLoadImage.UseVisualStyleBackColor = true;
 			this._btnLoadImage.Click += new System.EventHandler(this._btnLoadImage_Click);
 			// 
+			// _btnSaveImage
+			// 
+			this._btnSaveImage.Location = new System.Drawing.Point(392, 41);
+			this._btnSaveImage.Name = "_btnSaveImage";
+			this._btnSaveImage.Size = new System.Drawing.Size(105, 23);
+			this._btnSaveImage.TabIndex = 2;
+			this._btnSaveImage.Text = "Сохранить";
+			this._btnSaveImage.UseVisualStyleBackColor = true;
+			this._btnSaveImage.Click += new System.EventHandler(this._btnSaveImage_Click);
+			// 
 			// ViewImage
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(513, 307);
+			this.Controls.Add(this._btnSaveImage);
 			this.Controls.Add(this._btnLoadImage);
 			this.Controls.Add(this.pictureBox1);
 			this.Name = "ViewImage";
@@ -73,5 +85,6 @@
 
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Button _btnLoadImage;
+		private System.Windows.Forms.Button _btnSaveImage;
 	}
 }

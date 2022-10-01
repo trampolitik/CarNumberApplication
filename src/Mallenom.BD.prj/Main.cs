@@ -33,7 +33,7 @@ namespace Mallenom.BD
 		/// <summary> Кнопка отвечающая за добавление машины в базу данных. </summary>
 		private async void OnAddButtonClick(object sender, EventArgs e)
 		{
-			if(_txtNumberName.Text == string.Empty || Convert.ToInt32(_txtIdCamer.Text) > 16)
+			if(_txtNumberName.Text == string.Empty && _txtIdCamer.Text == string.Empty && Convert.ToInt32(_txtIdCamer.Text) > 16)
 			{
 				await Task.Run(() =>
 					MessageBox.Show("Поле не должно быть пустым или id не допустимое")
@@ -111,8 +111,8 @@ namespace Mallenom.BD
 		/// <summary> Кнопка, которая обновляет всю таблицу либо же загружает ее при старте. </summary>
 		private async void OnUpdateClick(object sender, EventArgs e)
 		{
-				_logic.ViewDataBase(dataGridView1);
-				UpdateDataView(dataGridView1);
+			_logic.ViewDataBase(dataGridView1);
+			UpdateDataView(dataGridView1);
 		}
 
 		/// <summary> Сортирует данные по id камеры </summary>
@@ -123,6 +123,7 @@ namespace Mallenom.BD
 				dataGridView1.DataSource = await db.Cars.OrderBy(x => x.IdCamer).ToListAsync();
 			}
 		}
+
 		/// <summary> Сортирует данные по номеру машины </summary>
 		private async void OnSortNumberCarsClick(object sender, EventArgs e)
 		{
@@ -131,6 +132,7 @@ namespace Mallenom.BD
 				dataGridView1.DataSource = await db.Cars.OrderBy(x => x.NumberCar).ToListAsync();
 			}
 		}
+
 		/// <summary> Сортирует данные по дате</summary>
 		private async void OnSortDataClick(object sender, EventArgs e)
 		{
@@ -140,6 +142,7 @@ namespace Mallenom.BD
 			}
 
 		}
+
 		/// <summary>Поиск по id или номеру машины.</summary>
 		private async void OnSearchClick(object sender, EventArgs e)
 		{
@@ -154,6 +157,7 @@ namespace Mallenom.BD
 
 			}
 		}
+
 		/// <summary>Кнопка отвечающая за удаление определенного элемента в базе данных.</summary>
 		private void OnDeleteClick(object sender, EventArgs e)
 		{
@@ -172,8 +176,16 @@ namespace Mallenom.BD
 		/// <summary>Меню отвечающее за переход на другую форму, где можно будет смотреть или загружать изображения в базу данных.</summary>
 		private async void _miViewOrDownloadImage_Click(object sender, EventArgs e)
 		{
-			ViewImage newForm = new ViewImage();
-			newForm.Show();
+			var result = int.TryParse(_txtId.Text, out int id);
+			if(result == true)
+			{
+				ViewImage newForm = new ViewImage(id);
+				newForm.Show();
+			}
+			else
+			{
+				MessageBox.Show("Укажите сначала id поля, в котором хотите посмотреть картинку");
+			}
 		}
 	}
 }

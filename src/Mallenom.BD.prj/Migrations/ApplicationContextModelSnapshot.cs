@@ -29,8 +29,12 @@ namespace Mallenom.BD.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdCamer")
+                    b.Property<int?>("IdCamer")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("NumberCar")
                         .IsRequired()
