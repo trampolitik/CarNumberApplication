@@ -45,6 +45,7 @@
 			this._miSortOfId = new System.Windows.Forms.ToolStripMenuItem();
 			this._miSortOfByNumberCars = new System.Windows.Forms.ToolStripMenuItem();
 			this._miSortByData = new System.Windows.Forms.ToolStripMenuItem();
+			this._miViewOrDownloadImage = new System.Windows.Forms.ToolStripMenuItem();
 			this._btnDeleteOneThing = new System.Windows.Forms.Button();
 			this._txtId = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -160,7 +161,8 @@
 			// дополнительныеПозможностиToolStripMenuItem
 			// 
 			this.дополнительныеПозможностиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сортировкаToolStripMenuItem});
+            this.сортировкаToolStripMenuItem,
+            this._miViewOrDownloadImage});
 			this.дополнительныеПозможностиToolStripMenuItem.Name = "дополнительныеПозможностиToolStripMenuItem";
 			this.дополнительныеПозможностиToolStripMenuItem.Size = new System.Drawing.Size(194, 20);
 			this.дополнительныеПозможностиToolStripMenuItem.Text = "Дополнительные позможности";
@@ -172,7 +174,7 @@
             this._miSortOfByNumberCars,
             this._miSortByData});
 			this.сортировкаToolStripMenuItem.Name = "сортировкаToolStripMenuItem";
-			this.сортировкаToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.сортировкаToolStripMenuItem.Size = new System.Drawing.Size(254, 22);
 			this.сортировкаToolStripMenuItem.Text = "Сортировка ";
 			// 
 			// _miSortOfId
@@ -195,6 +197,13 @@
 			this._miSortByData.Size = new System.Drawing.Size(254, 22);
 			this._miSortByData.Text = "Сортировка по дате ";
 			this._miSortByData.Click += new System.EventHandler(this.OnSortDataClick);
+			// 
+			// _miViewOrDownloadImage
+			// 
+			this._miViewOrDownloadImage.Name = "_miViewOrDownloadImage";
+			this._miViewOrDownloadImage.Size = new System.Drawing.Size(254, 22);
+			this._miViewOrDownloadImage.Text = "Посмотреть картинку/загрузить ";
+			this._miViewOrDownloadImage.Click += new System.EventHandler(this._miViewOrDownloadImage_Click);
 			// 
 			// _btnDeleteOneThing
 			// 
@@ -267,5 +276,6 @@
 		private System.Windows.Forms.ToolStripMenuItem _miSortByData;
 		private System.Windows.Forms.Button _btnDeleteOneThing;
 		private System.Windows.Forms.Label _txtId;
+		private System.Windows.Forms.ToolStripMenuItem _miViewOrDownloadImage;
 	}
 }

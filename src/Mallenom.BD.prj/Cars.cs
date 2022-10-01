@@ -27,6 +27,10 @@ namespace Mallenom.BD
 		/// <value>Id камеры.</value>
 		[Range(1,16)]
 		public int? IdCamer { get; set; } 
+
+		/// <summary>Возвращает и устанавливает массив байтов, который содержит картинку.</summary>
+		/// <value>Массив байтов.</value>
+		public byte[] Image { get; set; }
 		
 	}
 }

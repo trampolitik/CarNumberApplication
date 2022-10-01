@@ -169,5 +169,11 @@ namespace Mallenom.BD
 			}
 
 		}
+		/// <summary>Меню отвечающее за переход на другую форму, где можно будет смотреть или загружать изображения в базу данных.</summary>
+		private async void _miViewOrDownloadImage_Click(object sender, EventArgs e)
+		{
+			ViewImage newForm = new ViewImage();
+			newForm.Show();
+		}
 	}
 }
