@@ -101,10 +101,10 @@ namespace Mallenom.BD
 					{
 						db.Cars.Remove(l);
 						await db.SaveChangesAsync();
-
 					}
 				}
 			}
+			UpdateDataView(dataGridView1);
 
 		}
 
